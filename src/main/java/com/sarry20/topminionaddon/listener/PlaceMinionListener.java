@@ -29,7 +29,9 @@ public class PlaceMinionListener implements Listener {
         if (cPlayer.getPlacedTypes().contains(event.getType()))
             return;
         cPlayer.add1UniqueMinion(event.getType());
-        if (cPlayer.getUniqueMinions() >= plugin.getConfigUtil().getYamlConfiguration().getInt("increaseLimit")){
+        if (cPlayer.getUniqueMinions() >=
+                plugin.getConfigUtil().getYamlConfiguration().getInt("increaseLimit") *
+                (cPlayer.getLimit() == 0 ? 1 : cPlayer.getLimit()+1) ){
             cPlayer.add1Limit();
         }
     }
