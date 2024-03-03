@@ -15,6 +15,9 @@ import java.util.List;
 public class CPlayerManager {
     private final List<CPlayer> CPLAYERS = new ArrayList<>();
 
+    public CPlayerManager(){
+        loadCPlayers();
+    }
     public void loadCPlayers() {
         try {
             File folder = new File("plugins//TopMinionAddon//data");

@@ -22,7 +22,7 @@ public final class TopMinionAddon extends JavaPlugin {
 
         configUtil = new ConfigHelper("plugins//TopMinionAddon//config.yml");
         generateConfig();
-        cPlayerManager.loadCPlayers();
+        cPlayerManager = new CPlayerManager();
         Bukkit.getPluginManager().registerEvents(new PlaceMinionListener(),this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(),this);
     }
