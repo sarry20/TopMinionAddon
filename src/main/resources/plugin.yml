@@ -1,0 +1,5 @@
+name: TopMinionAddon
+version: '1.0.0'
+main: com.sarry20.topminionaddon.TopMinionAddon
+depend: [TopMinion]
+api-version: '1.19'
