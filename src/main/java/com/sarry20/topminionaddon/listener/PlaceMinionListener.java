@@ -15,13 +15,8 @@ public class PlaceMinionListener implements Listener {
     @EventHandler
     public void atPlace(MinionPlaceEvent event){
         CPlayer cPlayer = plugin.getcPlayerManager().getCPlayerByUUID(event.getPlayer().getUniqueId().toString());
-        if (event.getMinionsPlaced() >= event.getMinionsLimit()){
-            if (cPlayer == null)
-                return;
-            if (event.getMinionsPlaced() < event.getMinionsLimit()+cPlayer.getLimit()){
-                event.setSkipLimitCheck(true);
-            }
-        }
+        if (cPlayer != null)
+            event.setMinionsLimit(event.getMinionsLimit()+cPlayer.getLimit());
         List<MinionObj> minions = MinionObjManager.getPlayerMinions(event.getPlayer().getName());
         boolean isFirst = minions.stream().anyMatch(
                 minionObj ->
