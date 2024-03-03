@@ -2,6 +2,7 @@ package com.sarry20.topminionaddon;
 
 import com.sarry20.lib.data.ConfigHelper;
 import com.sarry20.topminionaddon.listener.PlaceMinionListener;
+import com.sarry20.topminionaddon.listener.PlayerJoinListener;
 import com.sarry20.topminionaddon.manager.CPlayerManager;
 import com.sarry20.topminionaddon.model.CPlayer;
 import org.bukkit.Bukkit;
@@ -23,7 +24,7 @@ public final class TopMinionAddon extends JavaPlugin {
         generateConfig();
         cPlayerManager.loadCPlayers();
         Bukkit.getPluginManager().registerEvents(new PlaceMinionListener(),this);
-
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(),this);
     }
 
     @Override
