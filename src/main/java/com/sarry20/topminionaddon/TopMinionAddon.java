@@ -1,6 +1,6 @@
 package com.sarry20.topminionaddon;
 
-import com.sarry20.lib.data.ConfigHelper;
+import com.sarry20.topminionaddon.config.ConfigUtil;
 import com.sarry20.topminionaddon.listener.PlaceMinionListener;
 import com.sarry20.topminionaddon.listener.PlayerJoinListener;
 import com.sarry20.topminionaddon.manager.CPlayerManager;
@@ -10,7 +10,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class TopMinionAddon extends JavaPlugin {
-    private ConfigHelper configUtil;
+    private ConfigUtil configUtil;
     private static TopMinionAddon instance;
     private CPlayerManager cPlayerManager;
 
@@ -20,8 +20,7 @@ public final class TopMinionAddon extends JavaPlugin {
         ConfigurationSerialization.registerClass(CPlayer.class);
         getLogger().info("Plugin enabling");
 
-        configUtil = new ConfigHelper("plugins//TopMinionAddon//config.yml");
-        generateConfig();
+        configUtil = new ConfigUtil("config",this,true);
         cPlayerManager = new CPlayerManager();
         Bukkit.getPluginManager().registerEvents(new PlaceMinionListener(),this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(),this);
@@ -31,16 +30,12 @@ public final class TopMinionAddon extends JavaPlugin {
     public void onDisable() {
         cPlayerManager.saveCPlayers();
     }
-    private void generateConfig(){
-        if (configUtil.getYamlConfiguration().getInt("increaseLimit") == 0){
-            configUtil.getYamlConfiguration().set("increaseLimit",5);
-            configUtil.saveConfig();
-        }
-    }
+
     public static TopMinionAddon getInstance() {
         return instance;
     }
-    public ConfigHelper getConfigUtil() {
+
+    public ConfigUtil getConfigUtil() {
         return configUtil;
     }
 

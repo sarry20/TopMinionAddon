@@ -1,6 +1,7 @@
 package com.sarry20.topminionaddon.manager;
 
-import com.sarry20.lib.data.ConfigHelper;
+import com.sarry20.topminionaddon.TopMinionAddon;
+import com.sarry20.topminionaddon.config.ConfigUtil;
 import com.sarry20.topminionaddon.model.CPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,11 +10,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class CPlayerManager {
-    private final List<CPlayer> CPLAYERS = new ArrayList<>();
+    private final HashMap<String,CPlayer> CPLAYERS = new HashMap<>();
 
     public CPlayerManager(){
         loadCPlayers();
@@ -28,7 +28,7 @@ public class CPlayerManager {
                 if (file.isFile()) {
                     FileConfiguration config = YamlConfiguration.loadConfiguration(file);
                     CPlayer cPlayer = (CPlayer) config.get("CPlayer");
-                    CPLAYERS.add(cPlayer);
+                    CPLAYERS.put(cPlayer.getUuid(),cPlayer);
                 }
             }
         } catch (Exception ex) {
@@ -38,11 +38,12 @@ public class CPlayerManager {
 
     public void saveCPlayers() {
         try {
-            for (CPlayer cPlayer : CPLAYERS) {
-                ConfigHelper configHelper = new ConfigHelper("plugins//TopMinionAddon//data//" + cPlayer.getUuid() + ".yml");
-                FileConfiguration config = configHelper.getYamlConfiguration();
+            for (CPlayer cPlayer : CPLAYERS.values()) {
+                File folder = new File("plugins//TopMinionAddon//data");
+                ConfigUtil configUtil = new ConfigUtil(cPlayer.getUuid(), TopMinionAddon.getInstance(),folder,false);
+                FileConfiguration config = configUtil.getConfig();
                 config.set("CPlayer", cPlayer);
-                configHelper.saveConfig();
+                configUtil.saveSync();
             }
         } catch (Exception ex) {
             Bukkit.getLogger().info(ChatColor.RED + "[TopMinionsAddon] An error has occurred saveCplayers()");
@@ -50,9 +51,9 @@ public class CPlayerManager {
     }
 
     public CPlayer getCPlayerByUUID(String uuid){
-        return CPLAYERS.stream().filter(cPlayer -> cPlayer.getUuid().equalsIgnoreCase(uuid)).findFirst().orElse(null);
+        return CPLAYERS.get(uuid);
     }
     public void createCPlayer(Player player){
-        CPLAYERS.add(new CPlayer(player.getUniqueId().toString()));
+        CPLAYERS.put(player.getUniqueId().toString(),new CPlayer(player.getUniqueId().toString()));
     }
 }
