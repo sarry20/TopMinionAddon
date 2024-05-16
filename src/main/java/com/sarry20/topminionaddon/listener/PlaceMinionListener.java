@@ -15,23 +15,23 @@ public class PlaceMinionListener implements Listener {
     @EventHandler
     public void atPlace(MinionPlaceEvent event){
         CPlayer cPlayer = plugin.getcPlayerManager().getCPlayerByUUID(event.getPlayer().getUniqueId().toString());
-        if (cPlayer != null)
-            event.setMinionsLimit(event.getMinionsLimit()+cPlayer.getLimit());
-        List<MinionObj> minions = MinionObjManager.getPlayerMinions(event.getPlayer().getName());
-        boolean isFirst = minions.stream().anyMatch(
-                minionObj ->
-                        minionObj.getType().equalsIgnoreCase(event.getType())
-        );
-        if (!isFirst)
-            return;
         if (cPlayer == null)
             return;
-        if (cPlayer.getPlacedTypes().contains(event.getType()))
+        event.setMinionsLimit(event.getMinionsLimit()+cPlayer.getLimit());
+        if (cPlayer.getPlacedMaterials().contains(event.getMaterial()))
             return;
-        cPlayer.add1UniqueMinion(event.getType());
+        boolean isFirst = MinionObjManager.getPlayerMinions(event.getPlayer().getName()).stream().anyMatch(
+                minionObj ->
+                        minionObj.getMaterial().equalsIgnoreCase(event.getMaterial())
+        );
+
+        if (!isFirst)
+            return;
+
+        cPlayer.add1UniqueMinion(event.getMaterial());
         if (cPlayer.getUniqueMinions() >=
-                plugin.getConfigUtil().getYamlConfiguration().getInt("increaseLimit") *
-                (cPlayer.getLimit() == 0 ? 1 : cPlayer.getLimit()+1) ){
+                plugin.getConfigUtil().getInt("increaseLimit") *
+                (cPlayer.getLimit() == 0 ? 1 : cPlayer.getLimit()+1)){
             cPlayer.add1Limit();
         }
     }

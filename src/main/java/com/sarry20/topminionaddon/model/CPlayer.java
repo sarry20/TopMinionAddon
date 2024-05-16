@@ -12,20 +12,20 @@ public class CPlayer implements ConfigurationSerializable {
     private final String uuid;
     private int limit;
     private int uniqueMinions;
-    private final List<String> placedTypes;
+    private final List<String> placedMaterials;
 
     public CPlayer(String uuid) {
         this.uuid = uuid;
         this.limit = 0;
         this.uniqueMinions = 0;
-        this.placedTypes = new ArrayList<>();
+        this.placedMaterials = new ArrayList<>();
     }
 
     public CPlayer(Map<String, Object> map) {
         uuid = (String) map.get("uuid");
         limit = (int) map.get("limit");
         uniqueMinions = (int) map.get("uniqueMinions");
-        placedTypes = (List<String>) map.get("placedTypes");
+        placedMaterials = (List<String>) map.get("placedMaterials");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class CPlayer implements ConfigurationSerializable {
         map.put("uuid",uuid);
         map.put("limit", limit);
         map.put("uniqueMinions",uniqueMinions);
-        map.put("placedTypes",placedTypes);
+        map.put("placedMaterials", placedMaterials);
         return map;
     }
 
@@ -42,7 +42,7 @@ public class CPlayer implements ConfigurationSerializable {
         return uuid;
     }
     public void add1UniqueMinion(String type){
-        placedTypes.add(type);
+        placedMaterials.add(type);
         uniqueMinions+=1;
     }
     public int getUniqueMinions() {
@@ -55,7 +55,7 @@ public class CPlayer implements ConfigurationSerializable {
         return limit;
     }
 
-    public List<String> getPlacedTypes() {
-        return placedTypes;
+    public List<String> getPlacedMaterials() {
+        return placedMaterials;
     }
 }
